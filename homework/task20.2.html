@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <style>
+    .form__container {
+      width: 80%;
+      display: flex;
+      align-items: stretch;
+    }
+    .input {
+      width: 13rem;
+      border: 2px solid rgb(212, 128, 212);
+      border-radius: 5px;
+      height: 2rem;
+      padding: 0.5rem;
+      margin: 0.5rem;
+      box-sizing: border-box;
+      height: 100%;
+      flex-grow: 1;
+      cursor: pointer;
+    }
+    #result__button {
+      background-color: rgba(247, 196, 247, 0.877);
+    }
+    .error {
+      color: red;
+      display: none;
+    }
+    #result__container,
+    #error__container {
+      padding: 0.5rem;
+      margin: 0.5rem;
+    }
+  </style>
+
+  <body>
+    <h2>Кого или что будем искать?</h2>
+    <form name="input__form" class="form__container">
+      <select
+        name="select__container"
+        id="select__container"
+        class="input"
+        required
+      >
+        <option value="" disabled selected hidden>Выберите категорию</option>
+        <option value="people">Люди</option>
+        <option value="planets">Планеты</option>
+        <option value="films">Фильмы</option>
+        <option value="species">Разновидности персонажей</option>
+        <option value="starships">Звёздные корабли</option>
+        <option value="vehicles">Транспортные средства</option>
+      </select>
+      <input
+        class="input"
+        type="number"
+        name="number__container"
+        id="number__container"
+        placeholder="Введите номер"
+        min="1"
+        max="87"
+        required
+      />
+      <button id="result__button" type="submit" class="input">Вперёд!</button>
+    </form>
+    <div id="result__container"></div>
+    <div id="error__container" class="error"></div>
+    <div id="loading__container" style="display: none">Идёт загрузка...</div>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const myForm = document.forms.input__form;
+        const selectInput = myForm.elements.select__container;
+        const numberInput = myForm.elements.number__container;
+        const button = document.getElementById("result__button");
+        const resultContainer = document.getElementById("result__container");
+        const errorContainer = document.getElementById("error__container");
+        const loadingContainer = document.getElementById("loading__container");
+
+        myForm.addEventListener("submit", async function (event) {
+          event.preventDefault();
+
+          const selectInputValue = selectInput.value;
+          const numberInputValue = numberInput.value;
+
+          resultContainer.innerHTML = "";
+          errorContainer.style.display = "none";
+
+          loadingContainer.style.display = "block";
+
+          try {
+            const swapiData = await fetch(
+              `https://swapi.py4e.com/api/${selectInputValue}/${numberInputValue}`
+            );
+
+            if (!swapiData.ok) {
+              throw new Error(
+                `Возникла ошибка на сервере: ${swapiData.status}`
+              );
+            }
+            const data = await swapiData.json();
+            resultContainer.innerHTML =
+              (data.name == undefined ? "" : `<h3>Name: ${data.name}</h3>`) +
+              (data.title == undefined ? "" : `<h3>Title: ${data.title}</h3>`) +
+              (data.gender == undefined
+                ? ""
+                : `<h3>Gender: ${data.gender}</h3>`) +
+              (data.director == undefined
+                ? ""
+                : `<h3>Director: ${data.director}</h3>`) +
+              (data.producer == undefined
+                ? ""
+                : `<h3>Producer: ${data.producer}</h3>`) +
+              (data.model == undefined ? "" : `<h3>Model: ${data.model}</h3>`) +
+              (data.manufacturer == undefined
+                ? ""
+                : `<h3>Manufacturer: ${data.manufacturer}</h3>`) +
+              (data.starship_class == undefined
+                ? ""
+                : `<h3>Starship class: ${data.starship_class}</h3>`) +
+              (data.vehicle_class == undefined
+                ? ""
+                : `<h3>Vehicle class: ${data.vehicle_class}</h3>`) +
+              (data.classification == undefined
+                ? ""
+                : `<h3>Classification: ${data.classification}</h3>`) +
+              (data.language == undefined
+                ? ""
+                : `<h3>Language: ${data.language}</h3>`);
+          } catch (error) {
+            errorContainer.innerHTML = error.message;
+            errorContainer.style.display = "block";
+          } finally {
+            loadingContainer.style.display = "none";
+            selectInput.selectedIndex = 0;
+            numberInput.value = "";
+          }
+        });
+      });
+    </script>
+  </body>
+</html>
