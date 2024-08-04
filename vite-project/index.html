@@ -5,11 +5,88 @@
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Vite App</title>
+    <style>
+      .charts {
+        width: 70%;
+        display: flex;
+        flex-direction: column;
+        margin: 2rem;
+      }
+      #map {
+        width: 70%;
+        height: 380px;
+      }
+      body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+      }
+      .app-wrap {
+        background: #ffffff;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        padding: 20px;
+        width: 300px;
+        text-align: center;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        margin: 2rem;
+      }
+      .location {
+        margin-bottom: 10px;
+        font-weight: bold;
+      }
+      .current {
+        margin-top: 10px;
+      }
+      .tempValue {
+        font-size: 36px;
+        margin: 10px 0;
+      }
+      .weather {
+        font-size: 18px;
+        margin-top: 5px;
+      }
+      .hi-low {
+        font-size: 16px;
+        color: #666;
+        margin-top: 5px;
+      }
+    </style>
   </head>
   <body>
-    <div id="app">
-      <div id="chart"></div>
+    <h2>Обучение в ITGirlSchool</h2>
+    <div class="charts">
+      <div>
+        <canvas id="myChart1"></canvas>
+      </div>
+
+      <div>
+        <canvas id="myChart2"></canvas>
+      </div>
     </div>
+
+    <h2>Мой город</h2>
+    <!-- Leaflet -->
+    <div id="map"></div>
+
+    <!-- погода -->
+    <div class="app-wrap">
+      <main>
+        <section class="location">
+          <div class="city"></div>
+          <div class="date"></div>
+        </section>
+        <div class="current">
+          <div class="tempValue"></div>
+          <div class="weather"></div>
+          <div class="hi-low"></div>
+        </div>
+      </main>
+    </div>
+
     <script type="module" src="/main.js"></script>
   </body>
 </html>
