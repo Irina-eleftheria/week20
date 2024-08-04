@@ -134,8 +134,7 @@
             errorContainer.style.display = "block";
           } finally {
             loadingContainer.style.display = "none";
-            selectInput.selectedIndex = 0;
-            numberInput.value = "";
+            myForm.reset();
           }
         });
       });
